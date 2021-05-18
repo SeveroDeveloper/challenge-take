@@ -6,7 +6,6 @@ const axios = require('axios');
 const app = express(); 
 // porta que o servidor está
 const port = process.env.APP_PORT || 3000;
-var http = require('http').Server(app);
 // conectando com a api do github
 const github = axios.default.create({
   baseURL: 'https://api.github.com',
@@ -60,6 +59,6 @@ app.get('/repositories', async (req, res, next) => {
   }
 });
 
-http.listen(port, () => {
+app.listen(port, () => {
   console.log(`Rodando na porta ${port}`);
 });
