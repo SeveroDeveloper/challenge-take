@@ -5,7 +5,7 @@ const axios = require('axios');
 // minha api
 const app = express(); 
 // porta que o servidor está
-const port = process.env.APP_PORT || 3000;
+const port = process.env.PORT || 3000;
 // conectando com a api do github
 const github = axios.default.create({
   baseURL: 'https://api.github.com',
