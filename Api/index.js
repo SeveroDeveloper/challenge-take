@@ -41,15 +41,18 @@ app.get('/repositories', async (req, res, next) => {
     // deixando os primeiros criados no começo
     repositories.reverse();
     
-    /*for (const repository of repositories)
+    for (const repository of repositories)
     {
+      if(repository.language == "C#")
+      {
+        fiveRepositories.push(repository);
+      }
       if(fiveRepositories.length == 5)
       {
         break;
       }
-    }*/
-
-    return res.json(repositories);
+    }    
+    return res.json(fiveRepositories);
   }catch(err)
   {
     console.error('error: ', err);
