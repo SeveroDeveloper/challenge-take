@@ -60,6 +60,6 @@ app.get('/repositories', async (req, res, next) => {
   }
 });
 
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`Rodando na porta ${port}`);
 });
