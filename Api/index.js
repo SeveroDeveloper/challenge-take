@@ -12,8 +12,11 @@ const github = axios.default.create({
 });
 // função para pegar os repositórios com a api do github
 // precisa ser async para esperar o retorno da outra api
-app.get('/repositories', async (req, res, next) => {
+app.get('/repositories', async (req, res, _next) => {
   try{
+    const { language, quantity } = req.query;
+    console.log("language = " + language);
+    console.log("quantity = " + quantity);
     //marca a página para navegar até a última (repos mais antigos)
     let page = 1;
     //armazena o retorno do github
@@ -43,11 +46,11 @@ app.get('/repositories', async (req, res, next) => {
     
     for (const repository of repositories)
     {
-      if(repository.language == "C#")
+      if(repository.language === language)
       {
         fiveRepositories.push(repository);
       }
-      if(fiveRepositories.length == 5)
+      if(fiveRepositories.length == quantity)
       {
         break;
       }
