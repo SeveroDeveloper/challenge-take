@@ -1,47 +1,49 @@
-require('dotenv').config();
+require('dotenv').config(); 
 const express = require('express');
 const axios = require('axios');
 
-// minha api
 const app = express(); 
-// porta que o servidor está
 const port = process.env.PORT || 3000;
-// conectando com a api do github
 const github = axios.default.create({
   baseURL: 'https://api.github.com',
 });
-// função para pegar os repositórios com a api do github
+
+// endpoint para pegar os repositórios com a api do github
 // precisa ser async para esperar o retorno da outra api
 app.get('/repositories', async (req, res, _next) => {
   try{
     const { language, quantity } = req.query;
+    //console.log para mostrar os dados que vieram na query
     console.log("language = " + language);
     console.log("quantity = " + quantity);
-    //marca a página para navegar até a última (repos mais antigos)
+    
     let page = 1;
-    //armazena o retorno do github
     let repositories = [];
+
     while(true)
     {
-      //fazendo requisição via axios
+      // requisição para a api do github
       const response = await github.get('/orgs/takenet/repos', {
-        //parâmetros da requisição
         params:{
           per_page: 100,
           sort: 'created',
           page,
         },
       });
+
       repositories = response.data;
       page++;
-      // chegou a ultima página
+      
       if (repositories.length < 100)
       {
+        /* para de fazer requisições ao chegar nos
+        últimos resultados (primeiros repositórios)*/
         break;
       }
     }
+
     const fiveRepositories = [];
-    // deixando os primeiros criados no começo
+    // primeiros repos criados no começo do array
     repositories.reverse();
     
     for (const repository of repositories)
@@ -55,7 +57,9 @@ app.get('/repositories', async (req, res, _next) => {
         break;
       }
     }    
+
     return res.json(fiveRepositories);
+    
   }catch(err)
   {
     console.error('error: ', err);
